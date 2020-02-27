@@ -1,0 +1,64 @@
+<nz-page-header (nzBack)="onBack()" nzBackIcon nzTitle="Специальная обработка"> </nz-page-header>
+
+<h2>Условия выполнения</h2>
+
+<nz-table #basicTable  nzSize="small" [nzFrontPagination]="false"
+[nzShowPagination]="false" [nzData]="listOfData">
+  <thead>
+    <tr>
+      <th>Условия выполнения мероприятий</th>
+      <th>Значение поправки на время</th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let data of basicTable.data">
+      <td>{{data?.caption}}</td>
+      <td>{{data?.value}}</td>
+      <td>
+        <label (ngModelChange)="onValueSelected(listOfData)"
+        *ngIf="data.hasOwnProperty('isChacked')" nz-checkbox
+        [(ngModel)]="data.isChacked"></label>
+      </td>
+    </tr>
+  </tbody>
+</nz-table>
+
+
+<h2 style="margin-top: 40px;">Условия выполнения</h2>
+<nz-table #result nzSize="small" [nzFrontPagination]="false"
+[nzShowPagination]="false" [nzData]="processingResult">
+  <thead>
+    <tr>
+      <th>Номер<br> п/п</th>
+      <th>Исходные данные, определяемые показатели</th>
+      <th>Показатели</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let data of result.data; let i = index">
+      <td>{{i + 1}}</td>
+      <td>{{data.caption}}</td>
+      <td>
+        <ng-container [ngSwitch]="data.type">
+          <ng-container *ngSwitchCase="FieldType.string">
+            <span *ngIf="data.value && infiniteChack(data.value)">{{data.value}}</span>
+          </ng-container>
+
+
+          <nz-radio-group *ngSwitchCase="FieldType.checkbox"
+            (ngModelChange)="onChangeField()" [(ngModel)]="data.value">
+            <label nz-radio [nzValue]="2">Дегазация</label>
+            <label nz-radio [nzValue]="10">Дезинфекция</label>
+          </nz-radio-group>
+
+          <input *ngSwitchCase="FieldType.input" (ngModelChange)="onChangeField()"  pattern="[0-9]*" maxlength="5"  nz-input placeholder="Введите значение" [(ngModel)]="data.value"/>
+        </ng-container>
+      </td>
+      <td>
+      </td>
+    </tr>
+  </tbody>
+</nz-table>
+
+

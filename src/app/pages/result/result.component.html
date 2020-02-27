@@ -1,0 +1,316 @@
+<h2>1. Возможности подразделений РХБ защиты.</h2>
+<table>
+  <thead>
+    <th>№ п/п</th>
+    <th>Наименование показателя</th>
+    <th>Величина измерения</th>
+    <th>Результат расчета</th>
+  </thead>
+  <tbody>
+    <ng-container *ngIf="storeValueRHR && storeValueRHR[0].value">
+      <tr>
+        <td colspan="4">Возможности по РХ разведке</td>
+      </tr>
+
+      <tr *ngFor="let item of storeValueRHR; let i = index">
+        <td>{{i+1}}</td>
+        <td>{{item.name}}</td>
+        <td>{{item.type}}</td>
+        <td>{{item.value}}</td>
+      </tr>
+    </ng-container>
+
+    <ng-container *ngIf="storeValueSO && storeValueSO[0].value">
+      <tr>
+        <td colspan="4">Возможности по специальной обработке ВВСТ и обеззараживанию участков<br> местности</td>
+      </tr>
+
+      <tr *ngFor="let item of storeValueSO; let i = index">
+        <td>{{i+1}}</td>
+        <td>{{item.name}}</td>
+        <td>{{item.type}}</td>
+        <td>{{item.value}}</td>
+      </tr>
+    </ng-container>
+
+    <ng-container *ngIf="storeValueAM && storeValueAM[0].value">
+      <tr>
+        <td colspan="4">Возможности по аэрозольной маскировке</td>
+      </tr>
+
+      <tr *ngFor="let item of storeValueAM; let i = index">
+        <td>{{i+1}}</td>
+        <td>{{item.name}}</td>
+        <td>{{item.type}}</td>
+        <td>{{item.value}}</td>
+      </tr>
+    </ng-container>
+
+    <ng-container *ngIf="storeValueOP">
+      <tr>
+        <td colspan="4">Возможности огнеметных подразделений по нанесению потерь противнику<br> зажигательным оружием</td>
+      </tr>
+
+      <tr *ngFor="let item of storeValueOP; let i = index">
+        <td>{{i+1}}</td>
+        <td>{{item.name}}</td>
+        <td>{{item.type}}</td>
+        <td>{{item.value}}</td>
+      </tr>
+    </ng-container>
+
+
+
+  </tbody>
+</table>
+
+
+<h2 style="margin-top: 40px;" *ngIf="ongoingtasks || perreodicallyPerformedtasks">2. Объем задач РХБ защиты, возможности по их выполнению.</h2>
+<h2 *ngIf="ongoingtasks || perreodicallyPerformedtasks">2.1. РХБ разведка.</h2>
+<table *ngIf="ongoingtasks || perreodicallyPerformedtasks" class="one" style="border: 1;">
+  <thead>
+    <th style="width: 53px; text-align: center;">№ п/п</th>
+    <th>Исходные данные, определяемые показатели</th>
+    <th style="width: 87px;">Показатели</th>
+  </thead>
+  <tbody>
+    <ng-container *ngIf="ongoingtasks">
+      <tr>
+        <td colspan="3"><h3>Постоянно выполняемые задачи</h3></td>
+      </tr>
+      <ng-container *ngFor="let item of ongoingtasks.pus; let i = index">
+        <tr>
+          <td class="coll-span-3">{{i + 1}}</td>
+          <td>Площадь района расположения ПУ {{item.puName}}</td>
+          <td>{{item.puSquare}}</td>
+        </tr>
+      </ng-container>
+      <tr>
+        <td class="coll-span-3">{{ongoingtasks.pus.length + 1}}</td>
+        <td>Всего пунктов управления</td>
+        <td>{{ongoingtasks.pus.length}}</td>
+      </tr>
+      <tr>
+        <td class="coll-span-3">{{ongoingtasks.pus.length + 2}}</td>
+        <td>Общая площадь районов расположения пунктов управления</td>
+        <td>{{ongoingtasks.pusSum}}</td>
+      </tr>
+      <tr>
+        <td class="coll-span-3">{{ongoingtasks.pus.length + 3}}</td>
+        <td>Количество штатных расчетов РХР, ед.</td>
+        <td>{{ongoingtasks.rhrQuantity}}</td>
+      </tr>
+      <tr>
+        <td class="coll-span-3">{{ongoingtasks.pus.length + 4}}</td>
+        <td>Количество специальнопо дготовленных расчетов РХР, ед.</td>
+        <td>{{ongoingtasks.rhrMainQuantity}}</td>
+      </tr>
+      <tr>
+        <td class="coll-span-3">{{ongoingtasks.pus.length + 6}}</td>
+        <td>Поправочный коофициент, учитывающий условия ведения разведки</td>
+        <td>{{ongoingtasks.correctionalCoefficient}}</td>
+      </tr>
+      <tr>
+        <td class="coll-span-3">{{ongoingtasks.pus.length + 7}}</td>
+        <td>Отведенное время для проведения разведки, ч.</td>
+        <td>{{ongoingtasks.time}}</td>
+      </tr>
+      <ng-container *ngFor="let item of ongoingtasks.squre; let i = index">
+        <tr>
+          <td class="coll-span-3">{{i + 1}}</td>
+          <td>Площадь района расположения РХБ опасного объекта {{item.squareName ? item.squareName : '-'}}</td>
+          <td>{{item.square}}</td>
+        </tr>
+      </ng-container>
+      <tr>
+        <td class="coll-span-3">{{ongoingtasks.pus.length + 9 + ongoingtasks.squre.length}}</td>
+        <td>Всего РХБ опасных объектов</td>
+        <td>{{ongoingtasks.squre.length}}</td>
+      </tr>
+      <tr>
+        <td class="coll-span-3">{{ongoingtasks.pus.length + 10 + ongoingtasks.squre.length}}</td>
+        <td>Общая площадь районов расположения РХБ опасных объектов, км2</td>
+        <td>{{ongoingtasks.rhboSum}}</td>
+      </tr>
+      <tr>
+        <td class="coll-span-3">{{ongoingtasks.pus.length + 11 + ongoingtasks.squre.length}}</td>
+        <td>Количество штатных расчетов РХР, необходимое для проведения РХ разведки районов расположения РХБ опасных объектов за отведенное время</td>
+        <td>{{ongoingtasks.quantityForRH}}</td>
+      </tr>
+      <tr>
+        <td class="coll-span-3">{{ongoingtasks.pus.length + 12 + ongoingtasks.squre.length}}</td>
+        <td>Количество штатных расчетов РХР, планируемых к применению для проведения РХ разведки районов расположения РХБ опасных объектов</td>
+        <td>{{ongoingtasks.rhrGeneralQuantity}}</td>
+      </tr>
+      <tr>
+        <td class="coll-span-3">{{ongoingtasks.pus.length + 13 + ongoingtasks.squre.length}}</td>
+        <td>Время, необходимое для проведения РХ разведки районов расположения РХБ опасных объектов штатными расчетами РХР, планируемыми к применению для выполнения этой задачи, ч.</td>
+        <td>{{ongoingtasks.timeMain}}</td>
+      </tr>
+    </ng-container>
+    <ng-container *ngIf="perreodicallyPerformedtasks">
+      <tr>
+        <td colspan="4"><h3>Периодически выполняемые задачи</h3></td>
+      </tr>
+      <ng-container *ngFor="let item of perreodicallyPerformedtasks.routs; let i = index">
+        <tr>
+         <td class="coll-span-3" rowspan="3">{{i + 1}}</td>
+         <td>Протяженность маршрута № {{item.routeName}},км (измеренного по карте)</td>
+         <td>{{item.length}}</td>
+        </tr>
+        <tr>
+          <td>Коэффициент увеличения протяженности маршрута № {{item.routeName}}</td>
+          <td>{{item.lengthhKoof}}</td>
+        </tr>
+        <tr>
+          <td>Протяженность маршрута № {{item.routeName}}</td>
+          <td>{{item.sumRoute}}</td>
+        </tr>
+      </ng-container>
+      <tr>
+        <td class="coll-span-3">{{routsLength + 1}}</td>
+        <td>Общая протяженность маршрутов, км</td>
+        <td>{{perreodicallyPerformedtasks.routesSum}}</td>
+      </tr>
+      <tr>
+        <td class="coll-span-3">{{routsLength + 2}}</td>
+        <td>Ориентировочная скорость движения машин, км/ч</td>
+        <td>{{perreodicallyPerformedtasks.speedCoefficient}}</td>
+      </tr>
+      <tr>
+        <td class="coll-span-3">{{routsLength + 3}}</td>
+        <td>Поправочный коофициент, учитывающий условия ведения разведки</td>
+        <td>{{perreodicallyPerformedtasks.correctionalCoefficient}}</td>
+      </tr>
+
+      <tr>
+        <td class="coll-span-3">{{routsLength + 4}}</td>
+        <td>Количество нештатных расчетов РХР, ед.</td>
+        <td>{{perreodicallyPerformedtasks.rhrQuantity}}</td>
+      </tr>
+      <tr>
+        <td class="coll-span-3">{{routsLength + 5}}</td>
+        <td>Время необходимое для ведения радиационной разведки маршрутов штатными расчетами РХР, ч.</td>
+        <td>{{perreodicallyPerformedtasks.timeToRhrRouts}}</td>
+      </tr>
+      <tr>
+        <td class="coll-span-3">{{routsLength + 6}}</td>
+        <td>Время необходимое для проведения химической разведки маршрутов штатными расчетами РХР, ч.</td>
+        <td>{{perreodicallyPerformedtasks.timeToChrRoutes}}</td>
+      </tr>
+
+      <tr>
+        <td class="coll-span-3">{{routsLength + 7}}</td>
+        <td>Время выполнения задачи (определенное старшим начальником, время для проведения разведки), ч.</td>
+        <td>{{perreodicallyPerformedtasks.timeToRhrByManager}}</td>
+      </tr>
+      <tr>
+        <td class="coll-span-3">{{routsLength + 8}}</td>
+        <td>Потребное количество штатных расчетов РХР для проведения разведки маршрутов за отведенное время, ед.</td>
+        <td>{{perreodicallyPerformedtasks.rhrQuantityByManagerTime}}</td>
+      </tr>
+      <tr>
+        <td class="coll-span-3">{{routsLength + 9}}</td>
+        <td>Потребное количество штатных расчетов РХР для проведения радиационной разведки маршрутов за отведенное время, ед.</td>
+        <td>{{perreodicallyPerformedtasks.radioQuantityByTime}}</td>
+      </tr>
+
+      <tr *ngFor="let item of perreodicallyPerformedtasks.squre; let i = index">
+        <td class="coll-span-3">{{i + 10 + routsLength}}</td>
+        <td>Площадь района расположения {{item.squareName}},км</td>
+        <td>{{item.square}}</td>
+      </tr>
+
+      <tr>
+        <td class="coll-span-3">{{routsLength + 11 + squareLength}}</td>
+        <td>Общая площадь районов, км2</td>
+        <td>{{perreodicallyPerformedtasks.squreSum}}</td>
+      </tr>
+
+      <tr>
+        <td class="coll-span-3">{{routsLength + 12 + squareLength}}</td>
+        <td>Количество штатных расчетов РХР, ед.</td>
+        <td>{{perreodicallyPerformedtasks.quantityRhrMain}}</td>
+      </tr>
+
+      <tr>
+        <td class="coll-span-3">{{routsLength + 13 + squareLength}}</td>
+        <td>Время выполнения задачи (определенное старшим начальником, время для проведения разведки), ч.</td>
+        <td>{{perreodicallyPerformedtasks.timeToRhrByManagerMain}}</td>
+      </tr>
+
+      <tr>
+        <td class="coll-span-3">{{routsLength + 14 + squareLength}}</td>
+        <td>Время необходимое для проведения радиацоннной разведки райлонов, ч.</td>
+        <td>{{perreodicallyPerformedtasks.timeToRadioDetection}}</td>
+      </tr>
+
+      <tr>
+        <td class="coll-span-3">{{routsLength + 15 + squareLength}}</td>
+        <td>Время необходимое для проведения химической разведки райлонов, ч.</td>
+        <td>{{perreodicallyPerformedtasks.timeToChemDetection}}</td>
+      </tr>
+
+      <tr>
+        <td class="coll-span-3">{{routsLength + 16 + squareLength}}</td>
+        <td>Потребное количество штатных рачетов РХР для проведения радиационной разведки районов за отведенное время, ед.</td>
+        <td>{{perreodicallyPerformedtasks.needToRadioDetection}}</td>
+      </tr>
+
+      <tr>
+        <td class="coll-span-3">{{routsLength + 17 + squareLength}}</td>
+        <td>Потребное количество штатных рачетов РХР для проведения химической разведки районов за отведенное время, ед.</td>
+        <td>{{perreodicallyPerformedtasks.needToChemDetection}}</td>
+      </tr>
+
+    </ng-container>
+  </tbody>
+</table>
+
+<h2 style="margin-top: 20px;" *ngIf="specialProcessingResult">2.2. Специальная обработка.</h2>
+<table *ngIf="specialProcessingResult" class="one" style="border: 1;">
+  <thead>
+    <th style="width: 53px; text-align: center;">№ п/п</th>
+    <th>Исходные данные, определяемые показатели</th>
+    <th style="width: 87px;">Показатели</th>
+  </thead>
+  <tbody>
+      <tr *ngFor="let item of specialProcessingResult; let i = index">
+        <td class="coll-span-3">{{i + 1}}</td>
+        <td>{{item.caption}}</td>
+        <td>{{item.value}}</td>
+      </tr>
+  </tbody>
+</table>
+
+<h2 style="margin-top: 20px;" *ngIf="aerosolResult">2.3. Аэрозольная маскировка</h2>
+<table *ngIf="aerosolResult" class="one" style="border: 1;">
+  <thead>
+    <th style="width: 53px; text-align: center;">№ п/п</th>
+    <th>Исходные данные, определяемые показатели</th>
+    <th style="width: 87px;">Показатели</th>
+  </thead>
+  <tbody>
+    <ng-container *ngFor="let item of aerosolResult.addDynamicElement; let i = index">
+      <tr>
+       <td class="coll-span-3" rowspan="3">{{i + 1}}</td>
+       <td>Площадь объекта маскировки {{item.name}}, м²</td>
+       <td>{{item.square}}</td>
+      </tr>
+      <tr>
+        <td>Количество ложных объектов маскировки для {{item.name}} шт.</td>
+        <td>{{item.quantity}}</td>
+      </tr>
+      <tr>
+        <td>Площадь ложных объектов маскировки для {{item.name}}</td>
+        <td>{{item.sumSquare}}</td>
+      </tr>
+    </ng-container>
+    <tr>
+      <td class="coll-span-3">{{1 + aerosolResult.addDynamicElement.length}}</td>
+      <td>Общая площадь маскировки, м²</td>
+      <td>{{aerosolResult.sum}}</td>
+    </tr>
+  </tbody>
+</table>
+

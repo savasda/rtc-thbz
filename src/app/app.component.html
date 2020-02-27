@@ -1,0 +1,38 @@
+<nz-layout class="app-layout">
+  <nz-sider class="menu-sidebar"
+            nzCollapsible
+            nzWidth="256px"
+            nzBreakpoint="md"
+            [(nzCollapsed)]="isCollapsed"
+            [nzTrigger]="null">
+            <div class="sidebar-logo">
+              <a routerLink="/">
+                <img src="./assets/logo.png" alt="logo">
+                <h1>РТС - РХБЗ</h1>
+              </a>
+            </div>
+    <ul nz-menu nzTheme="dark" nzMode="inline" [nzInlineCollapsed]="isCollapsed">
+      <li style="height: 40px; line-height: 40px;" nz-menu-item nzMatchRouter>
+        <a routerLink="/timing">Расчет времени</a>
+      </li>
+      <li style="height: 40px; line-height: 18px;" nz-menu-item nzMatchRouter>
+        <a routerLink="/opportunities">Возможности подразделений<br> РХБ защиты</a>
+      </li>
+      <li style="height: 40px; line-height: 18px;" nz-menu-item nzMatchRouter>
+        <a routerLink="/capabilities">Определение возможного<br> объема задач РХБ защиты</a>
+      </li>
+    </ul>
+  </nz-sider>
+  <nz-layout>
+    <nz-header>
+      <div style="padding: 0 24px; justify-content: flex-end; display: flex; align-items: center;" class="app-header">
+        <button routerLink="/result" nz-button nzType="default">Результаты вычислений</button>
+      </div>
+    </nz-header>
+    <nz-content>
+      <div class="inner-content">
+        <router-outlet></router-outlet>
+      </div>
+    </nz-content>
+  </nz-layout>
+</nz-layout>

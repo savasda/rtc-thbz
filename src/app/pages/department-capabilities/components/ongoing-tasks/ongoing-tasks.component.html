@@ -1,0 +1,128 @@
+<nz-page-header (nzBack)="onBack()" nzBackIcon nzTitle="Постоянно выполняемые задачи"> </nz-page-header>
+
+
+<form style="margin-top: 50px;" [formGroup]="form">
+  <table>
+    <thead>
+      <th style="width: 60px;">№ п.п.</th>
+      <th>Исходные данные, определяемые показатели</th>
+      <th>Показатели</th>
+      <th style=" width: 90px;"></th>
+    </thead>
+
+      <tbody >
+        <ng-container formArrayName="pus">
+          <ng-container [formGroupName]="i" *ngFor="let item of pusArr?.controls; let i = index">
+            <tr>
+              <td  style="border-right: 1px solid #e8e8e8; width: 60px;">{{i + 1}}</td>
+              <td>
+                Площадь района расположения ПУ
+                <input placeholder="Название ПУ" type="text" style="width: 120px;" nz-input formControlName="puName">
+                , км2
+              </td>
+              <td>
+                <input placeholder="Введите значение" formControlName="puSquare" type="text" nz-input>
+              </td>
+              <td style="border-left: 1px solid #e8e8e8; width: 90px;" >
+                <div><button style="width: 100%;" (click)="removePu(i)" *ngIf="pusArr.controls.length > 1" nz-button nzType="danger">Удалить</button></div>
+                <button style="margin-top: 5px;" nz-button nzType="primary" *ngIf="pusArr.controls.length === i+1" (click)="addPus()">Добавить</button>
+              </td>
+            </tr>
+          </ng-container>
+        </ng-container>
+        <tr>
+          <td>{{getControllByname('pus').value.length + 1}}</td>
+          <td>Всего пунктов управления</td>
+          <td>{{getControllByname('pus').value.length ? getControllByname('pus').value.length : '-'}}</td>
+          <td></td>
+        </tr>
+        <tr>
+          <td>{{getControllByname('pus').value.length + 2}}</td>
+          <td>Общая площадь районов расположения пунктов управления</td>
+          <td>{{getControllByname('pusSum').value ? getControllByname('pusSum').value : '-'}}</td>
+          <td></td>
+        </tr>
+        <tr>
+          <td>{{getControllByname('pus').value.length + 3}}</td>
+          <td>Количество штатных расчетов РХР, ед.</td>
+          <td><input formControlName="rhrQuantity" placeholder="Введите значение" type="text" nz-input></td>
+          <td></td>
+        </tr>
+        <tr>
+          <td>{{getControllByname('pus').value.length + 4}}</td>
+          <td>Количество специальнопо дготовленных расчетов РХР, ед.</td>
+          <td><input formControlName="rhrMainQuantity" placeholder="Введите значение" type="text" nz-input></td>
+          <td></td>
+        </tr>
+        <tr>
+          <td>{{getControllByname('pus').value.length + 5}}</td>
+          <td>Поправочный коофициент, учитывающий условия ведения разведки</td>
+          <td>
+            <nz-radio-group formControlName="correctionalCoefficient">
+              <label nz-radio [nzValue]="1">Дневное время</label>
+              <label nz-radio [nzValue]="1.5">Ночьное время</label>
+            </nz-radio-group>
+          </td>
+          <td></td>
+        </tr>
+        <tr>
+          <td>{{getControllByname('pus').value.length + 6}}</td>
+          <td>Отведенное время для проведения разведки, ч</td>
+          <td><input formControlName="time" placeholder="Введите значение" type="text" nz-input></td>
+          <td></td>
+        </tr>
+        <ng-container formArrayName="squre">
+          <ng-container [formGroupName]="i" *ngFor="let item of square?.controls; let i = index">
+            <tr>
+              <td  style="border-right: 1px solid #e8e8e8; width: 60px;">{{i + 7 + getControllByname('pus').value.length}}</td>
+              <td>
+                Площадь района расположения РХБ опасного объекта
+                <input placeholder="Название ПУ" type="text" style="width: 120px;" nz-input formControlName="squareName">
+                , км2
+              </td>
+              <td>
+                <input placeholder="Введите значение" formControlName="square" type="text" nz-input>
+              </td>
+              <td style="border-left: 1px solid #e8e8e8; width: 90px;" >
+                <div><button style="width: 100%;" (click)="removeSquare(i)" *ngIf="square.controls.length > 1" nz-button nzType="danger">Удалить</button></div>
+                <button style="margin-top: 5px;" nz-button nzType="primary" *ngIf="square.controls.length === i+1" (click)="addSquare()">Добавить</button>
+              </td>
+            </tr>
+          </ng-container>
+        </ng-container>
+        <tr>
+          <td>{{getControllByname('pus').value.length + 8 + getControllByname('squre').value.length}}</td>
+          <td>Всего РХБ опасных объектов</td>
+          <td>{{getControllByname('squre').value.length ? getControllByname('squre').value.length : '-'}}</td>
+          <td></td>
+        </tr>
+        <tr>
+          <td>{{getControllByname('pus').value.length + 9 + getControllByname('squre').value.length}}</td>
+          <td>Общая площадь районов расположения РХБ опасных объектов, км2</td>
+          <td>{{getControllByname('rhboSum').value ? getControllByname('rhboSum').value : '-'}}</td>
+          <td></td>
+        </tr>
+        <tr>
+          <td>{{getControllByname('pus').value.length + 10 + getControllByname('squre').value.length}}</td>
+          <td>Количество штатных расчетов РХР, необходимое для проведения РХ разведки районов расположения РХБ опасных объектов за отведенное время</td>
+          <td>{{getControllByname('quantityForRH').value ? getControllByname('quantityForRH').value : '-'}}</td>
+          <td></td>
+        </tr>
+        <tr>
+          <td>{{getControllByname('pus').value.length + 11 + getControllByname('squre').value.length}}</td>
+          <td>Количество штатных расчетов РХР, планируемых к применению для проведения РХ разведки районов расположения РХБ опасных объектов</td>
+          <td><input formControlName="rhrGeneralQuantity" placeholder="Введите значение" type="text" nz-input></td>
+          <td></td>
+        </tr>
+        <tr>
+          <td>{{getControllByname('pus').value.length + 12 + getControllByname('squre').value.length}}</td>
+          <td>Время, необходимое для проведения РХ разведки районов расположения РХБ опасных объектов штатными расчетами РХР, планируемыми к применению для выполнения этой задачи, ч</td>
+          <td>{{getControllByname('timeMain').value ? getControllByname('timeMain').value : '-'}}</td>
+          <td></td>
+        </tr>
+
+      </tbody>
+
+  </table>
+
+</form>

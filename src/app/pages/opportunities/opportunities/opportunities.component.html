@@ -1,0 +1,179 @@
+<table>
+  <thead>
+    <th style="width: 60px;">№ п.п.</th>
+    <th>Наименование показателя</th>
+    <th>Велечина измерения</th>
+    <th>Показатели</th>
+  </thead>
+  <tr>
+    <td colspan="4"><h3>Возможности по РХБ разведке</h3></td>
+  </tr>
+  <ng-container *ngFor="let item of opportunities_rhr; let i = index">
+    <tr *ngIf="i === 0 || i === 1 else gapRef">
+      <td>{{i + 1}}</td>
+      <td>{{item.name}}</td>
+      <td>{{item.type}}</td>
+      <td>
+        <input (keyup)="onCalculateRhr()" style="width: 150px;" placeholder="Введите значение" nz-input type="text" [(ngModel)]="item.value">
+      </td>
+    </tr>
+    <ng-template #gapRef>
+      <tr>
+        <td>{{i + 1}}</td>
+        <td>{{item.name}}</td>
+        <td>{{item.type}}</td>
+        <td>{{item.value ? item.value : '-'}}</td>
+      </tr>
+    </ng-template>
+  </ng-container>
+
+  <tr>
+    <td colspan="4"><h3>Возможности по специальной обработке ВВСТ и обеззараживанию участков местности</h3></td>
+  </tr>
+  <ng-container *ngFor="let item of opportunities_so; let i = index">
+    <tr *ngIf="i === 0 || i === 1 else gapRef">
+      <td>{{i + opportunities_rhr.length + 1}}</td>
+      <td>{{item.name}}</td>
+      <td>{{item.type}}</td>
+      <td>
+        <input (keyup)="onCalculateSo()" style="width: 150px;" placeholder="Введите значение" nz-input type="text" [(ngModel)]="item.value">
+      </td>
+    </tr>
+    <ng-template #gapRef>
+      <tr>
+        <td>{{i + 1}}</td>
+        <td>{{item.name}}</td>
+        <td>{{item.type}}</td>
+        <td>{{item.value ? item.value : '-'}}</td>
+      </tr>
+    </ng-template>
+  </ng-container>
+
+  <tr>
+    <td colspan="4"><h3>Возможности по аэрозольной маскировке</h3></td>
+  </tr>
+  <ng-container *ngFor="let item of opportunities_am; let i = index">
+
+    <tr *ngIf="i === 0 || i === 1 || i === 2 || i ===3; else gapRef">
+      <td>{{i + opportunities_rhr.length + opportunities_so.length + 1}}</td>
+      <td>{{item.name}}</td>
+      <td>{{item.type}}</td>
+      <td>
+        <input (keyup)="onCalculateAm()" style="width: 150px;" placeholder="Введите значение" nz-input type="text" [(ngModel)]="item.value">
+      </td>
+    </tr>
+
+    <ng-template #gapRef>
+      <tr>
+        <td>{{i + opportunities_rhr.length + opportunities_so.length + 1}}</td>
+        <td>{{item.name}}</td>
+        <td>{{item.type}}</td>
+        <td>{{item.value ? item.value : '-'}}</td>
+      </tr>
+    </ng-template>
+  </ng-container>
+
+
+  <tr>
+    <td colspan="4"><h3>Возможности огнеметных подразделений</h3></td>
+  </tr>
+  <ng-container *ngFor="let item of opportunities_op; let i = index">
+
+
+    <tr *ngIf="i === 0">
+      <td>{{i + opportunities_rhr.length + opportunities_so.length + opportunities_am.length + 1}}</td>
+      <td>{{item.name}}</td>
+      <td>{{item.type}}</td>
+      <td>
+        <input (keyup)="onCalculateOp()" style="width: 150px;" placeholder="Введите значение" nz-input type="text" [(ngModel)]="item.value">
+      </td>
+    </tr>
+
+    <tr *ngIf="i === 1">
+      <td>{{i + opportunities_rhr.length + opportunities_so.length + opportunities_am.length + 1}}</td>
+      <td>{{item.name}}</td>
+      <td>{{item.type}}</td>
+      <td>{{item.value ? item.value : '-'}}</td>
+    </tr>
+
+    <tr *ngIf="i === 2">
+      <td>{{i + opportunities_rhr.length + opportunities_so.length + opportunities_am.length + 1}}</td>
+      <td>{{item.name}}</td>
+      <td>{{item.type}}</td>
+      <td>{{item.value ? item.value : '-'}}</td>
+    </tr>
+
+    <tr *ngIf="i === 3">
+      <td>{{i + opportunities_rhr.length + opportunities_so.length + opportunities_am.length + 1}}</td>
+      <td>{{item.name}}</td>
+      <td>{{item.type}}</td>
+      <td>
+        <nz-radio-group (ngModelChange)="onCalculateOp()" [(ngModel)]="item.value">
+          <label nz-radio nzValue=".3">Сильное 30%</label>
+          <label nz-radio nzValue=".2">Среднее 20%</label>
+          <label nz-radio nzValue=".1">Слабое 10%</label>
+        </nz-radio-group>
+      </td>
+    </tr>
+
+    <tr *ngIf="i === 4">
+      <td>{{i + opportunities_rhr.length + opportunities_so.length + opportunities_am.length + 1}}</td>
+      <td>{{item.name}}</td>
+      <td>{{item.type}}</td>
+      <td>{{item.value ? item.value : '-'}}</td>
+    </tr>
+
+    <tr *ngIf="i === 5">
+      <td>{{i + opportunities_rhr.length + opportunities_so.length + opportunities_am.length + 1}}</td>
+      <td>{{item.name}}</td>
+      <td>{{item.type}}</td>
+      <td>{{item.value ? item.value : '-'}}</td>
+    </tr>
+
+
+  </ng-container>
+</table>
+
+<table style="margin-top: 40px;">
+  <thead>
+    <tr>
+      <th rowspan="2" style="border-right: 1px solid #e8e8e8;">Дальность стрельбы, м.</th>
+      <th colspan="6">
+        <div style="text-align: center;">Типы целей</div>
+      </th>
+    </tr>
+    <tr>
+      <th>Огневая точка в окопе 1,2 х 1,5м</th>
+      <th>Дзот с амбразурой 0,3 х 0,7м</th>
+      <th>Транспортный автомобиль</th>
+      <th>Специальный автомобиль</th>
+      <th>Самолет на аэродроме</th>
+      <th>БТР/БМП</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let item of op_koofs">
+      <td>{{item.name}}</td>
+      <td>
+        <label (ngModelChange)="onChangeOPcheckbox(item.koof_1)" *ngIf="item.koof_1.value; else emptyRef" nz-checkbox [(ngModel)]="item.koof_1.checked">{{item.koof_1.value}}</label>
+      </td>
+      <td>
+        <label (ngModelChange)="onChangeOPcheckbox(item.koof_2)" *ngIf="item.koof_2.value; else emptyRef" nz-checkbox [(ngModel)]="item.koof_2.checked">{{item.koof_2.value}}</label>
+      </td>
+      <td>
+        <label (ngModelChange)="onChangeOPcheckbox(item.koof_3)" *ngIf="item.koof_3.value; else emptyRef" nz-checkbox [(ngModel)]="item.koof_3.checked">{{item.koof_3.value}}</label>
+      </td>
+      <td>
+        <label (ngModelChange)="onChangeOPcheckbox(item.koof_4)" *ngIf="item.koof_4.value; else emptyRef" nz-checkbox [(ngModel)]="item.koof_4.checked">{{item.koof_4.value}}</label>
+      </td>
+      <td>
+        <label (ngModelChange)="onChangeOPcheckbox(item.koof_5)" *ngIf="item.koof_5.value; else emptyRef" nz-checkbox [(ngModel)]="item.koof_5.checked">{{item.koof_5.value}}</label>
+      </td>
+      <td>
+        <label (ngModelChange)="onChangeOPcheckbox(item.koof_6)" *ngIf="item.koof_6.value; else emptyRef" nz-checkbox [(ngModel)]="item.koof_6.checked">{{item.koof_6.value}}</label>
+      </td>
+    </tr>
+
+  </tbody>
+</table>
+<ng-template #emptyRef>-</ng-template>

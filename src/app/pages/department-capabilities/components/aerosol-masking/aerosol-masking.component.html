@@ -1,0 +1,74 @@
+<nz-page-header (nzBack)="onBack()" nzBackIcon nzTitle="Аэрозольная маскировка"> </nz-page-header>
+
+
+<h2>Справочно: Размеры аэрозольных завес при маскировке типовых объектов</h2>
+
+<nz-table #basicTable  nzSize="small" [nzFrontPagination]="false"
+[nzShowPagination]="false" [nzData]="aerosolData">
+  <thead>
+    <tr>
+      <th>Объект маскировки</th>
+      <th>Уязвимые элементы,<br>требующие скрытия</th>
+      <th>Размер АЭЗ, м.</th>
+      <th>Количество действительных<br>и ложных АЭЗ</th>
+    </tr>
+  </thead>
+  <tbody>
+   <tr *ngFor="let data of basicTable.data">
+     <td>{{data.name}}</td>
+     <td>{{data.caption}}</td>
+     <td>{{data.size}}</td>
+     <td>{{data.value}}</td>
+   </tr>
+  </tbody>
+</nz-table>
+
+
+<form class="form-so" [formGroup]="registrationForm">
+  <table>
+    <thead>
+      <th style="width: 60px;">№ п.п.</th>
+      <th>Исходные данные, определяемые показатели</th>
+      <th>Показатели</th>
+      <th style=" width: 90px;"></th>
+    </thead>
+    <ng-container formArrayName="addDynamicElement">
+      <tbody  [formGroupName]="i" *ngFor="let item of addDynamicElement.controls; let i = index">
+        <tr>
+          <td  rowspan="3" style="border-right: 1px solid #e8e8e8; width: 60px;">{{i + 1}}</td>
+          <td>
+            Площадь объекта маскировки
+            <input placeholder="Название" type="text"
+            style="width: 200px;" nz-input formControlName="name">, м²
+          </td>
+          <td>
+            <input placeholder="Введите значение" formControlName="square" type="text" nz-input>
+          </td>
+          <td style="border-left: 1px solid #e8e8e8; width: 90px;" rowspan="3">
+            <div><button style="width: 100%;" (click)="remove(i)" *ngIf="addDynamicElement.controls.length > 1" nz-button nzType="danger">Удалить</button></div>
+            <button style="margin-top: 5px;" nz-button nzType="primary" *ngIf="addDynamicElement.controls.length === i+1" (click)="addItems()">Добавить</button>
+          </td>
+        </tr>
+        <tr>
+          <td>Количество ложных объектов маскировки для <strong>{{controlValue(i).name ? controlValue(i).name : '(название объекта)'}}</strong> шт.</td>
+          <td><input formControlName="quantity" placeholder="Введите значение" type="text" nz-input></td>
+        </tr>
+        <tr>
+          <td>Площадь ложных объектов маскировки для <strong>{{controlValue(i).name ? controlValue(i).name : '(название объекта)'}}</strong> м²</td>
+          <td><input readonly formControlName="sumSquare" placeholder="Введите значение" type="text" nz-input></td>
+        </tr>
+      </tbody>
+      <tbody>
+        <tr>
+          <td></td>
+          <td>Общая площадь маскировки, м²</td>
+          <td>{{registrationForm.get('sum').value}}</td>
+          <td></td>
+        </tr>
+      </tbody>
+
+    </ng-container>
+  </table>
+
+</form><!-- Form ends -->
+

@@ -1,0 +1,293 @@
+<nz-page-header (nzBack)="onBack()" nzBackIcon nzTitle="Переодически выполняемые задачи"> </nz-page-header>
+
+<h2>Коофициент увеличения протяженности маршрута</h2>
+
+<nz-table #basicTable  nzSize="small" [nzFrontPagination]="false"
+[nzShowPagination]="false" [nzData]="periodicallyPerfomedTasksData">
+  <thead>
+    <tr>
+      <th style="border-right: 1px solid #e8e8e8;" rowspan="2">Характер местности</th>
+      <th colspan="4">Коофициент для карты маштаба</th>
+    </tr>
+    <tr>
+      <th style="border-top: 1px solid #e8e8e8;">1:50000</th>
+      <th style="border-top: 1px solid #e8e8e8;">1:100000</th>
+      <th style="border-top: 1px solid #e8e8e8;">1:200000</th>
+      <th style="border-top: 1px solid #e8e8e8;">1:500000</th>
+    </tr>
+  </thead>
+  <tbody>
+   <tr *ngFor="let data of basicTable.data">
+    <td>{{data.name}}</td>
+    <td style="border-left: 1px solid #e8e8e8;">
+      {{data.koof_1.value}}
+    </td>
+
+    <td style="border-left: 1px solid #e8e8e8;">
+      {{data.koof_2.value}}
+    </td>
+
+    <td style="border-left: 1px solid #e8e8e8;">
+      {{data.koof_3.value}}
+    </td>
+
+    <td style="border-left: 1px solid #e8e8e8;">
+      {{data.koof_4.value}}
+    </td>
+
+   </tr>
+  </tbody>
+</nz-table>
+
+<h2 style="margin-top: 40px;">Ориентировочная скорость движения машин</h2>
+
+<nz-table #speed  nzSize="small" [nzFrontPagination]="false"
+[nzShowPagination]="false" [nzData]="periodicallyPerfomedTasksSpeedData">
+  <thead>
+    <tr>
+      <th style="border-right: 1px solid #e8e8e8;" rowspan="2">Покрытие дороги</th>
+      <th colspan="3">Средняя скорость движения, км/ч</th>
+    </tr>
+    <tr>
+      <th style="border-top: 1px solid #e8e8e8;">По отремонтированному покрытию</th>
+      <th style="border-top: 1px solid #e8e8e8;">10% площади покрытия требует ремонта</th>
+      <th style="border-top: 1px solid #e8e8e8;">> 10% площади покрытия требует ремонта</th>
+    </tr>
+  </thead>
+  <tbody>
+   <tr *ngFor="let data of speed.data">
+     <td>{{data.name}}</td>
+     <td style="border-left: 1px solid #e8e8e8;">
+      <label nz-checkbox (ngModelChange)="getSpeedCoefficient(data.koof_1)" *ngIf="data.koof_1.hasOwnProperty('checked'); else ref1" [(ngModel)]="data.koof_1.checked">{{data.koof_1.value ? data.koof_1.value : data.koof_1}}</label>
+      <ng-template #ref1>{{data.koof_1}}</ng-template>
+    </td>
+     <td style="border-left: 1px solid #e8e8e8;">
+      <label nz-checkbox (ngModelChange)="getSpeedCoefficient(data.koof_2)" *ngIf="data.koof_2.hasOwnProperty('checked'); else ref2" [(ngModel)]="data.koof_2.checked">{{data.koof_2.value ? data.koof_2.value : data.koof_2}}</label>
+      <ng-template #ref2>{{data.koof_2}}</ng-template>
+    </td>
+     <td style="border-left: 1px solid #e8e8e8;">
+      <label nz-checkbox (ngModelChange)="getSpeedCoefficient(data.koof_3)" *ngIf="data.koof_3.hasOwnProperty('checked'); else ref3" [(ngModel)]="data.koof_3.checked">{{data.koof_3.value ? data.koof_3.value : data.koof_3}}</label>
+      <ng-template #ref3>{{data.koof_3}}</ng-template>
+    </td>
+   </tr>
+  </tbody>
+</nz-table>
+
+
+<h2 style="margin-top: 40px;">Ориентировочные коофициенты проходимости местности вне дорог</h2>
+
+<nz-table #speedOut  nzSize="small" [nzFrontPagination]="false"
+[nzShowPagination]="false" [nzData]="periodicallyPerfomedTasksSpeedOutData">
+  <thead>
+    <tr>
+      <th style="border-right: 1px solid #e8e8e8;" rowspan="2">Характер местности</th>
+      <th colspan="3">Коофициент проходимости местности вне дорог</th>
+    </tr>
+    <tr>
+      <th style="border-top: 1px solid #e8e8e8;">В обычных условиях.</th>
+      <th style="border-top: 1px solid #e8e8e8;">В районах разрушений, пожара.</th>
+    </tr>
+  </thead>
+  <tbody>
+   <tr *ngFor="let data of speedOut.data">
+     <td>{{data.name}}</td>
+     <td style="border-left: 1px solid #e8e8e8;">
+      <label nz-checkbox  (ngModelChange)="getPermeabilityCoefficient(data.koof_1)" [(ngModel)]="data.koof_1.checked">{{data.koof_1.value}}</label>
+    </td>
+     <td style="border-left: 1px solid #e8e8e8;">
+      <label nz-checkbox  (ngModelChange)="getPermeabilityCoefficient(data.koof_2)"  [(ngModel)]="data.koof_2.checked">{{data.koof_2.value}}</label>
+    </td>
+   </tr>
+  </tbody>
+</nz-table>
+
+
+
+
+
+<form style="margin-top: 50px;" [formGroup]="form">
+  <table>
+    <thead>
+      <th style="width: 60px;">№ п.п.</th>
+      <th>Исходные данные, определяемые показатели</th>
+      <th>Показатели</th>
+      <th style=" width: 90px;"></th>
+    </thead>
+
+      <tbody >
+        <ng-container formArrayName="routs">
+          <ng-container [formGroupName]="i" *ngFor="let item of routs.controls; let i = index">
+            <tr>
+              <td  rowspan="3" style="border-right: 1px solid #e8e8e8; width: 60px;">{{i + 1}}</td>
+              <td>
+                Протяженность маршрута № <input placeholder="№ маршрута" type="text" style="width: 100px;" nz-input formControlName="routeName"> ,км (измеренного по карте)
+              </td>
+              <td>
+                <input placeholder="Введите значение" formControlName="length" type="text" nz-input>
+              </td>
+              <td style="border-left: 1px solid #e8e8e8; width: 90px;" rowspan="3">
+                <div><button style="width: 100%;" (click)="removeRoute(i)" *ngIf="routs.controls.length > 1" nz-button nzType="danger">Удалить</button></div>
+                <button style="margin-top: 5px;" nz-button nzType="primary" *ngIf="routs.controls.length === i+1" (click)="addRoute()">Добавить</button>
+              </td>
+            </tr>
+            <tr>
+              <td>Коофициент увеличения протяженности маршрута № <strong>{{controlRoutValue(i).routeName ? controlRoutValue(i).routeName : '(№ маршрута)'}}</strong></td>
+              <td><input formControlName="lengthhKoof" placeholder="Введите значение" type="text" nz-input></td>
+            </tr>
+            <tr>
+              <td>Протяженность маршрута № <strong>{{controlRoutValue(i).routeName ? controlRoutValue(i).routeName : '(№ маршрута)'}}</strong></td>
+              <td><input readonly formControlName="sumRoute" placeholder="Введите значение" type="text" nz-input></td>
+            </tr>
+          </ng-container>
+        </ng-container>
+        <tr>
+          <td>{{routs.length + 1}}</td>
+          <td style="border-left: 1px solid #e8e8e8;">Общая протяженность маршрутов, км</td>
+          <td><strong>{{form.get('routesSum').value ? form.get('routesSum').value : '-' }}</strong></td>
+          <td></td>
+        </tr>
+        <tr>
+          <td>{{routs.length + 2}}</td>
+          <td style="border-left: 1px solid #e8e8e8;">Ориентировочная скорость движения машин, км/ч</td>
+          <td><strong>{{form.get('speedCoefficient').value ? form.get('speedCoefficient').value : '-'}}</strong></td>
+          <td></td>
+        </tr>
+        <tr>
+          <td>{{routs.length + 3}}</td>
+          <td style="border-left: 1px solid #e8e8e8;">Ориентировочный коофициент проходимости местности вне дорог</td>
+          <td><strong>{{form.get('permeabilityCoefficient').value ? form.get('permeabilityCoefficient').value : '-'}}</strong></td>
+          <td></td>
+        </tr>
+        <tr>
+          <td>{{routs.length + 4}}</td>
+          <td style="border-left: 1px solid #e8e8e8;">Поправочный коофициент, учитывающий условия ведения разведки</td>
+          <td>
+            <nz-radio-group formControlName="correctionalCoefficient">
+              <label nz-radio [nzValue]="1">Дневное время</label>
+              <label nz-radio [nzValue]="1.5">Ночьное время</label>
+            </nz-radio-group>
+          </td>
+          <td></td>
+        </tr>
+        <tr>
+          <td>{{routs.length + 5}}</td>
+          <td style="border-left: 1px solid #e8e8e8;">Количество нештатных расчетов РХР, ед.</td>
+          <td><input formControlName="rhrQuantity" placeholder="Введите значение" type="text" nz-input></td>
+          <td></td>
+        </tr>
+        <tr>
+          <td>{{routs.length + 6}}</td>
+          <td style="border-left: 1px solid #e8e8e8;">Время необходимое для ведения <strong>радиационной</strong> разведки маршрутов штатными расчетами РХР, ч.</td>
+          <td><strong>{{form.get('timeToRhrRouts').value ? form.get('timeToRhrRouts').value : '-'}}</strong></td>
+          <td></td>
+        </tr>
+        <tr>
+          <td>{{routs.length + 7}}</td>
+          <td style="border-left: 1px solid #e8e8e8;">Время необходимое для проведения <strong>химической</strong> разведки маршрутов штатными расчетами РХР, ч.</td>
+          <td><strong>{{form.get('timeToChrRoutes').value ? form.get('timeToChrRoutes').value : '-'}}</strong></td>
+          <td></td>
+        </tr>
+        <tr>
+          <td>{{routs.length + 8}}</td>
+          <td style="border-left: 1px solid #e8e8e8;">Время выполнения задачи (определенное старшим начальником, время для проведения разведки), ч.</td>
+          <td><input formControlName="timeToRhrByManager" placeholder="Введите значение" type="text" nz-input></td>
+          <td></td>
+        </tr>
+        <tr>
+          <td>{{routs.length + 9}}</td>
+          <td style="border-left: 1px solid #e8e8e8;">Потребное количество штатных расчетов РХР для проведения разведки маршрутов за отведенное время, ед.</td>
+          <td><strong>{{form.get('rhrQuantityByManagerTime').value ? form.get('rhrQuantityByManagerTime').value : '-'}}</strong></td>
+          <td></td>
+        </tr>
+
+        <tr>
+          <td>{{routs.length + 10}}</td>
+          <td style="border-left: 1px solid #e8e8e8;">Потребное количество штатных расчетов РХР для проведения радиационной разведки маршрутов за отведенное время, ед.</td>
+          <td><strong>{{form.get('radioQuantityByTime').value ? form.get('radioQuantityByTime').value : '-'}}</strong></td>
+          <td></td>
+        </tr>
+
+        <ng-container formArrayName="squre">
+          <ng-container [formGroupName]="i" *ngFor="let item of square.controls; let i = index">
+            <tr>
+              <td  style="border-right: 1px solid #e8e8e8; width: 60px;">{{i + routs.length + 11}}</td>
+              <td>
+                Площадь района расположения <input placeholder="Название" type="text" style="width: 100px;" nz-input formControlName="squareName"> ,км
+              </td>
+              <td>
+                <input placeholder="Введите значение" formControlName="square" type="text" nz-input>
+              </td>
+              <td style="border-left: 1px solid #e8e8e8; width: 90px;" >
+                <div><button style="width: 100%;" (click)="removeSquare(i)" *ngIf="square.controls.length > 1" nz-button nzType="danger">Удалить</button></div>
+                <button style="margin-top: 5px;" nz-button nzType="primary" *ngIf="square.controls.length === i+1" (click)="addSquare()">Добавить</button>
+              </td>
+            </tr>
+          </ng-container>
+        </ng-container>
+
+        <tr>
+          <td>{{routs.length + square.length + 12}}</td>
+          <td style="border-left: 1px solid #e8e8e8;">Общая площадь районов, км2</td>
+          <td><strong>{{form.get('squreSum').value ? form.get('squreSum').value : '-'}}</strong></td>
+          <td></td>
+        </tr>
+
+        <tr>
+          <td>{{routs.length + square.length + 13}}</td>
+          <td style="border-left: 1px solid #e8e8e8;">Поправочный коофициент, учитывающий условия ведения разведки</td>
+          <td>
+            <nz-radio-group formControlName="correctionalCoefficientSquare">
+              <label nz-radio [nzValue]="1">Дневное время</label>
+              <label nz-radio [nzValue]="1.5">Ночьное время</label>
+            </nz-radio-group>
+          </td>
+          <td></td>
+        </tr>
+
+        <tr>
+          <td>{{routs.length + square.length + 14}}</td>
+          <td style="border-left: 1px solid #e8e8e8;">Количество штатных расчетов РХР, ед.</td>
+          <td><input formControlName="quantityRhrMain" placeholder="Введите значение" type="text" nz-input></td>
+          <td></td>
+        </tr>
+
+        <tr>
+          <td>{{routs.length + square.length + 15}}</td>
+          <td style="border-left: 1px solid #e8e8e8;">Время выполнения задачи (определенное старшим начальником, время для проведения разведки), ч.</td>
+          <td><input formControlName="timeToRhrByManagerMain" placeholder="Введите значение" type="text" nz-input></td>
+          <td></td>
+        </tr>
+
+        <tr>
+          <td>{{routs.length + square.length + 16}}</td>
+          <td style="border-left: 1px solid #e8e8e8;">Время необходимое для проведения радиацоннной разведки райлонов, ч.</td>
+          <td><strong>{{form.get('timeToRadioDetection').value ? form.get('timeToRadioDetection').value : '-'}}</strong></td>
+          <td></td>
+        </tr>
+
+        <tr>
+          <td>{{routs.length + square.length + 17}}</td>
+          <td style="border-left: 1px solid #e8e8e8;">Время необходимое для проведения химической разведки райлонов, ч.</td>
+          <td><strong>{{form.get('timeToChemDetection').value ? form.get('timeToChemDetection').value : '-'}}</strong></td>
+          <td></td>
+        </tr>
+
+        <tr>
+          <td>{{routs.length + square.length + 18}}</td>
+          <td style="border-left: 1px solid #e8e8e8;">Потребное количество штатных рачетов РХР для проведения радиационной разведки районов за отведенное время, ед.</td>
+          <td><strong>{{form.get('needToRadioDetection').value ? form.get('needToRadioDetection').value : '-'}}</strong></td>
+          <td></td>
+        </tr>
+
+        <tr>
+          <td>{{routs.length + square.length + 18}}</td>
+          <td style="border-left: 1px solid #e8e8e8;">Потребное количество штатных рачетов РХР для проведения химической разведки районов за отведенное время, ед.</td>
+          <td><strong>{{form.get('needToChemDetection').value ? form.get('needToChemDetection').value : '-'}}</strong></td>
+          <td></td>
+        </tr>
+
+      </tbody>
+
+  </table>
+
+</form><!-- Form ends -->

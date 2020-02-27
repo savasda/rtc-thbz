@@ -1,0 +1,36 @@
+<nz-page-header (nzBack)="onBack()" nzBackIcon nzTitle="В ходе боевых действий"> </nz-page-header>
+<nz-table *ngIf="dutyEventTiming" #basicTable  nzSize="small" [nzFrontPagination]="false"
+[nzShowPagination]="false" [nzData]="dutyEventTiming">
+  <thead>
+    <tr>
+      <th>№ п.п.</th>
+      <th>Наименование мероприятия</th>
+      <th>Результаты расчета</th>
+    </tr>
+  </thead>
+  <tbody>
+    <ng-container *ngFor="let data of basicTable.data; let i = index">
+      <tr *ngIf="i === 0; else refToStatic">
+        <td>{{i + 1}}</td>
+        <td>{{data.name}}</td>
+        <td>
+          <nz-time-picker style="width: 200px;" [(ngModel)]="data.value" nzFormat="HH:mm"></nz-time-picker>
+        </td>
+      </tr>
+      <ng-template #refToStatic>
+        <tr>
+          <td>{{i + 1}}</td>
+          <td>{{data.name}}</td>
+          <td>
+            <ng-container *ngIf="addMinutes(data.value) === '-'; else refToString">
+              -
+            </ng-container>
+            <ng-template #refToString>
+              {{addMinutes(data.value) | date: 'HH:mm dd.MM.yyyy'}}
+            </ng-template>
+          </td>
+        </tr>
+      </ng-template>
+    </ng-container>
+  </tbody>
+</nz-table>
